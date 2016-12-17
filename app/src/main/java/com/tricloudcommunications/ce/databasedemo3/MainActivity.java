@@ -21,24 +21,39 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        SQLiteDatabase usersDB = this.openOrCreateDatabase("Users", MODE_PRIVATE, null);
-        usersDB.execSQL("CREATE TABLE IF NOT EXISTS users (userName VARCHAR, userAge INT(3))");
-        usersDB.execSQL("INSERT INTO users (userName, userAge) VALUES('Chandler', 37)");
-        usersDB.execSQL("INSERT INTO users (userName, userAge) VALUES('Triphose', 35)");
 
-        Cursor c = usersDB.rawQuery("SELECT * FROM users", null);
+        try {
+            SQLiteDatabase usersDB = this.openOrCreateDatabase("Users", MODE_PRIVATE, null);
+            //usersDB.execSQL("CREATE TABLE IF NOT EXISTS users (userName VARCHAR, userAge INT(3))");
+            //usersDB.execSQL("INSERT INTO users (userName, userAge) VALUES('Chandler', 37)");
+            //usersDB.execSQL("INSERT INTO users (userName, userAge) VALUES('Triphose', 35)");
+            //usersDB.execSQL("INSERT INTO users (userName, userAge) VALUES('Milan', 10)");
+            //usersDB.execSQL("INSERT INTO users (userName, userAge) VALUES('Laila', 8)");
 
-        int userNameIndex = c.getColumnIndex("userName");
-        int userAgeIndex = c.getColumnIndex("userAge");
+            //Cursor c = usersDB.rawQuery("SELECT * FROM users", null); //Gets all record in that users Table
+            //Cursor c = usersDB.rawQuery("SELECT * FROM users WHERE userAge < 18", null);//Searched for all records where the userAge field has a value of less than 18
+            //Cursor c = usersDB.rawQuery("SELECT * FROM users WHERE userName = 'Milan' AND userAge < 20", null);//Searched for all records where the userName='Milan' and the userAge<20
+            //Cursor c = usersDB.rawQuery("SELECT * FROM users WHERE userName = 'Milan' AND userAge = 20", null);//Searches for all records where the userName='Milan' and the userAge = 20
+            //Cursor c = usersDB.rawQuery("SELECT * FROM users WHERE userName LIKE 'L%'", null);//Searched for all records where the userName is LIKE it starts with a capital letter 'L' 'L%'
+            //Cursor c = usersDB.rawQuery("SELECT * FROM users WHERE userName LIKE '%n'", null);//Searched for all records where the userName is LIKE it ends with a lower case letter 'n' '%n'
+            Cursor c = usersDB.rawQuery("SELECT * FROM users WHERE userName LIKE '%o%'", null);//Searched for all records where the userName is LIKE it has a lower case letter 'o' inside of the string '%o%'
 
-        c.moveToFirst();
+            int userNameIndex = c.getColumnIndex("userName");
+            int userAgeIndex = c.getColumnIndex("userAge");
 
-        while (c != null){
+            c.moveToFirst();
 
-            Log.i("Database Results", "User Name- " + c.getString(userNameIndex) + " User Age- " + c.getString(userAgeIndex));
+            while (c != null) {
 
-            c.moveToNext();
+                Log.i("Database Results", "User Name: " + c.getString(userNameIndex) + " User Age: " + c.getString(userAgeIndex));
+
+                c.moveToNext();
+            }
+        }catch (Exception e){
+
+            e.printStackTrace();
         }
+
 
     }
 
